@@ -1,0 +1,31 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="library">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="author" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="book" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:positiveInteger" name="id" use="required"/>
+                      <xs:attribute type="xs:string" name="title" use="required"/>
+                      <xs:attribute type="xs:string" name="genre" use="required"/>
+                      <xs:attribute type="xs:short" name="year" use="required"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute type="xs:positiveInteger" name="id" use="required"/>
+            <xs:attribute type="xs:string" name="fullname" use="required"/>
+            <xs:attribute type="xs:string" name="date-of-birth" use="required"/>
+            <xs:attribute type="xs:string" name="lang" use="required"/>
+            <xs:attribute type="xs:string" name="country" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

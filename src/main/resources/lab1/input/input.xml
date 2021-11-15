@@ -1,0 +1,32 @@
+<library>
+	<author id="1" fullname="Stephen King" date-of-birth="1947-09-21" lang="English" country="US">
+		<book id="1" title="It" genre="horror" year="1986"/>
+		<book id="2" title="Shining" genre="horror" year="1977"/>
+		<book id="3" title="Green Mile" genre="fantasy" year="1986"/>
+	</author>
+	<author id="2" fullname="Joanne Rowling" date-of-birth="1965-07-31" lang="English" country="GB">
+		<book id="4" title="Harry Potter and Philosophy Stone" genre="fantasy" year="1997"/>
+		<book id="5" title="Fantastic Beasts and Were to Find Them" genre="fantasy" year="2001"/>
+		<book id="6" title="Harry Potter and Deathly Hollows" genre="fantasy" year="2007"/>
+	</author>
+	<author id="3" fullname="Erich Maria Remaeque" date-of-birth="1870-09-25" lang="German" country="DE">
+		<book id="7" title="Three Comrades" genre="drama" year="1936"/>
+		<book id="8" title="Shadows in the Paradise" genre="novel" year="1971"/>
+		<book id="9" title="Time to Live and Time to Die" genre="novel" year="1954"/>
+	</author>
+	<author id="4" fullname="Marcel Proust" date-of-birth="1871-07-10" lang="French" country="FR">
+		<book id="10" title="Against Sainte-Beuve" genre="modernist" year="1954"/>
+		<book id="11" title="Pleasures and Days" genre="modernist" year="1896"/>
+		<book id="12" title="The Prisoner" genre="novel" year="1923"/>
+	</author>
+	<author id="5" fullname="Sergey Yesenin" date-of-birth="1895-10-03" lang="Russian" country="RU">
+		<book id="13" title="Goodbye, My Friend, Goodbye" genre="poem" year="1925"/>
+		<book id="14" title="The Black Man" genre="poem" year="1925"/>
+		<book id="15" title="Hooligan" genre="poem" year="1919"/>
+	</author>
+	<author id="6" fullname="Taras Shevchenko" date-of-birth="1814-03-09" lang="Ukrainian" country="UA">
+		<book id="16" title="Testament" genre="poem" year="1845"/>
+		<book id="17" title="Catherine" genre="poem" year="1839"/>
+		<book id="18" title="Haidamaky" genre="poem" year="1841"/>
+	</author>
+</library>
