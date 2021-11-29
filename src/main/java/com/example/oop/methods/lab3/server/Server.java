@@ -2,14 +2,14 @@ package com.example.oop.methods.lab3.server;
 
 import com.example.oop.methods.commons.model.Author;
 import com.example.oop.methods.commons.model.Book;
-import com.example.oop.methods.commons.model.Library;
+import com.example.oop.methods.lab2.AuthorRepository;
+import com.example.oop.methods.lab2.BookRepository;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,20 +18,24 @@ public class Server {
     public static final int SERVER_PORT = 8888;
     public static final String IP_ADDRESS = "localhost";
 
-    private int port;
-    private Library library;
+    private final int port;
+//    private final Library library;
+    private final AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
     private ServerSocket serverSocket;
     private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
-    private long authorIdCounter;
-    private long bookIdCounter;
+//    private long authorIdCounter;
+//    private long bookIdCounter;
 
     public Server(int port) {
         this.port = port;
-        this.library = new Library();
-        this.authorIdCounter = 0L;
-        this.bookIdCounter = 0L;
+//        this.library = new Library();
+        this.authorRepository = new AuthorRepository();
+        this.bookRepository = new BookRepository();
+//        this.authorIdCounter = 0L;
+//        this.bookIdCounter = 0L;
     }
 
     public void start() throws IOException {
@@ -135,7 +139,7 @@ public class Server {
                     break;
                 }
                 case 6: {
-                    int totalBooksAmount = this.library.getBooks().size();
+                    int totalBooksAmount = this.bookRepository.getAllBooks().size();
                     System.out.println("Writing total books amount to the output stream ...");
                     this.out.writeInt(totalBooksAmount);
                     break;
@@ -167,7 +171,7 @@ public class Server {
                     break;
                 }
                 case 9: {
-                    List<Author> authors = this.library.getAuthors();
+                    List<Author> authors = this.authorRepository.getAllAuthors();
                     this.out.writeInt(authors.size());
                     for (Author author: authors) {
                         this.out.writeLong(author.getId());
@@ -190,24 +194,37 @@ public class Server {
     }
 
     private List<Book> getAllBooksByAuthorId(long authorId) {
-        return this.library.getBooks().stream()
+//        return this.library.getBooks().stream()
+//                .filter(b -> b.getAuthor().getId().equals(authorId))
+//                .collect(Collectors.toList());
+        return this.bookRepository.getAllBooks().stream()
                 .filter(b -> b.getAuthor().getId().equals(authorId))
                 .collect(Collectors.toList());
     }
 
     private List<Book> getAllBooksByAuthorFullName(String authorFullName) {
-        return this.library.getBooks().stream()
+//        return this.library.getBooks().stream()
+//                .filter(b -> b.getAuthor().getFullName().equals(authorFullName))
+//                .collect(Collectors.toList());
+        return this.bookRepository.getAllBooks().stream()
                 .filter(b -> b.getAuthor().getFullName().equals(authorFullName))
                 .collect(Collectors.toList());
     }
 
     private boolean updateBookInfoById(long bookIdToUpdate, String title, String genre, int year, long authorId) {
         try {
-            Book bookToUpdate = this.findBookById(bookIdToUpdate);
-            bookToUpdate.setTitle(title);
-            bookToUpdate.setGenre(genre);
-            bookToUpdate.setYear(year);
-            bookToUpdate.setAuthor(this.findAuthorById(authorId));
+//            Book bookToUpdate = this.findBookById(bookIdToUpdate);
+//            bookToUpdate.setTitle(title);
+//            bookToUpdate.setGenre(genre);
+//            bookToUpdate.setYear(year);
+//            bookToUpdate.setAuthor(this.findAuthorById(authorId));
+            this.bookRepository.updateBook(
+                    bookIdToUpdate,
+                    this.authorRepository.getAuthorById(authorId).getFullName(),
+                    title,
+                    genre,
+                    year
+            );
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -215,27 +232,32 @@ public class Server {
         }
     }
 
-    private Book findBookById(long bookId) throws Exception {
-        return this.library.getBooks().stream()
-                .filter(b -> b.getId().equals(bookId))
-                .findFirst()
-                .orElseThrow(() -> new Exception("No book with ID " + bookId + " found"));
-    }
+//    private Book findBookById(long bookId) throws Exception {
+//        return this.library.getBooks().stream()
+//                .filter(b -> b.getId().equals(bookId))
+//                .findFirst()
+//                .orElseThrow(() -> new Exception("No book with ID " + bookId + " found"));
+//    }
 
     private boolean deleteBookById(long bookIdToDelete) {
-        return this.library.getBooks().removeIf(b -> b.getId().equals(bookIdToDelete));
+//        return this.library.getBooks().removeIf(b -> b.getId().equals(bookIdToDelete));
+        return this.bookRepository.deleteBook(bookIdToDelete);
     }
 
     private long createNewBook(String title, String genre, int year, long authorId) {
         try {
-            Book book = new Book();
-            book.setId(++this.bookIdCounter);
-            book.setTitle(title);
-            book.setGenre(genre);
-            book.setYear(year);
-            book.setAuthor(this.findAuthorById(authorId));
-            this.library.getBooks().add(book);
-            return book.getId();
+//            Book book = new Book();
+//            book.setId(++this.bookIdCounter);
+//            book.setTitle(title);
+//            book.setGenre(genre);
+//            book.setYear(year);
+//            book.setAuthor(this.findAuthorById(authorId));
+//            this.library.getBooks().add(book);
+//            return book.getId();
+            return this.bookRepository.createBook(
+                    this.authorRepository.getAuthorById(authorId).getFullName(),
+                    title, genre, year
+            );
         } catch (Exception e) {
             e.printStackTrace();
             return -1L;
@@ -243,25 +265,28 @@ public class Server {
     }
 
     private Author findAuthorById(long authorId) throws Exception {
-        return this.library.getAuthors().stream()
-                .filter(a -> a.getId().equals(authorId))
-                .findFirst().orElseThrow(() -> new Exception("No author with ID " + authorId + " found"));
+//        return this.library.getAuthors().stream()
+//                .filter(a -> a.getId().equals(authorId))
+//                .findFirst().orElseThrow(() -> new Exception("No author with ID " + authorId + " found"));
+        return this.authorRepository.getAuthorById(authorId);
     }
 
     private boolean deleteAuthorById(long authorIdToDelete) {
-        return this.library.getAuthors().removeIf(a -> a.getId().equals(authorIdToDelete));
+//        return this.library.getAuthors().removeIf(a -> a.getId().equals(authorIdToDelete));
+        return this.authorRepository.deleteAuthor(authorIdToDelete);
     }
 
     private long createNewAuthor(String fullName, String birthDay, String lang, String country) {
         try {
-            Author author = new Author();
-            author.setId(++this.authorIdCounter);
-            author.setFullName(fullName);
-            author.setBirthDay(birthDay);
-            author.setLang(lang);
-            author.setCountry(country);
-            this.library.getAuthors().add(author);
-            return author.getId();
+//            Author author = new Author();
+//            author.setId(++this.authorIdCounter);
+//            author.setFullName(fullName);
+//            author.setBirthDay(birthDay);
+//            author.setLang(lang);
+//            author.setCountry(country);
+//            this.library.getAuthors().add(author);
+//            return author.getId();
+            return this.authorRepository.createAuthor(fullName, birthDay, lang, country);
         } catch (Exception e) {
             e.printStackTrace();
             return -1L;
